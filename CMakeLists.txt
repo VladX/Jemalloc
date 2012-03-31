@@ -1,0 +1,55 @@
+project (jemalloc C)
+cmake_minimum_required (VERSION 2.6)
+
+option (DEBUG_MEMORY "Debug memory." OFF)
+
+add_definitions (-DTRIMMED -DMOZ_MEMORY=1 -DMALLOC_OPENTUBE=1)
+
+if (DEBUG_MEMORY)
+ add_definitions (-DDEBUG -DMOZ_MEMORY_DEBUG)
+else (DEBUG_MEMORY)
+ add_definitions (-DNDEBUG)
+endif (DEBUG_MEMORY)
+
+if ("${CMAKE_C_COMPILER_ID}" MATCHES "clang" OR "${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
+ set (CLANG_COMPILER 1)
+endif ("${CMAKE_C_COMPILER_ID}" MATCHES "clang" OR "${CMAKE_C_COMPILER_ID}" MATCHES "Clang")
+
+if (CMAKE_COMPILER_IS_GNUCC OR MINGW OR CYGWIN OR CLANG_COMPILER)
+ set (CMAKE_C_FLAGS "-O3 -g -Wno-unused-result -Wno-attributes")
+endif (CMAKE_COMPILER_IS_GNUCC OR MINGW OR CYGWIN OR CLANG_COMPILER)
+
+if (CLANG_COMPILER)
+ set (CMAKE_C_FLAGS "-Wno-unknown-warning-option ${CMAKE_C_FLAGS}")
+endif (CLANG_COMPILER)
+
+if (MSVC)
+ set (CMAKE_C_FLAGS "/MT /O2")
+endif (MSVC)
+
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+ add_definitions (-DMOZ_MEMORY_LINUX=1)
+endif (CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+if (CMAKE_SYSTEM_NAME MATCHES ".*BSD")
+ add_definitions (-DMOZ_MEMORY_BSD=1)
+endif (CMAKE_SYSTEM_NAME MATCHES ".*BSD")
+
+if (WIN32 OR MINGW)
+ add_definitions (-DMOZ_MEMORY_WINDOWS=1)
+endif (WIN32 OR MINGW)
+
+include (CheckTypeSize)
+check_type_size ("void *" TYPE_VOID_POINTER_SIZE BUILTIN_TYPES_ONLY)
+
+if (TYPE_VOID_POINTER_SIZE EQUAL 4)
+ set (MOZ_MEMORY_SIZEOF_PTR_2POW 2)
+elseif (TYPE_VOID_POINTER_SIZE EQUAL 8)
+ set (MOZ_MEMORY_SIZEOF_PTR_2POW 3)
+elseif (TYPE_VOID_POINTER_SIZE EQUAL 16)
+ set (MOZ_MEMORY_SIZEOF_PTR_2POW 4)
+endif (TYPE_VOID_POINTER_SIZE EQUAL 4)
+
+add_definitions (-DMOZ_MEMORY_SIZEOF_PTR_2POW=${MOZ_MEMORY_SIZEOF_PTR_2POW})
+
+add_library (jemalloc STATIC jemalloc.c)

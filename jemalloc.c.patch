@@ -1,0 +1,83 @@
+--- jemalloc.orig.c	2012-03-31 00:32:24.455146193 +0400
++++ jemalloc.c	2012-03-31 02:26:28.355918000 +0400
+@@ -218,6 +218,7 @@
+ #endif
+ 
+ #include <sys/types.h>
++#include <stdint.h>
+ 
+ #include <errno.h>
+ #include <stdlib.h>
+@@ -234,6 +235,7 @@
+ #include <io.h>
+ #include <windows.h>
+ 
++#ifdef _MSC_VER
+ #pragma warning( disable: 4267 4996 4146 )
+ 
+ #define	bool BOOL
+@@ -244,6 +246,14 @@
+ #define	STDERR_FILENO 2
+ #define	PATH_MAX MAX_PATH
+ #define	vsnprintf _vsnprintf
++#else
++#define	bool BOOL
++#define	false FALSE
++#define	true TRUE
++#define	SIZE_T_MAX SIZE_MAX
++#define	STDERR_FILENO 2
++#define	vsnprintf _vsnprintf
++#endif
+ 
+ #ifndef NO_TLS
+ static unsigned long tlsIndex = 0xffffffff;
+@@ -253,6 +263,7 @@
+ #define	_pthread_self() __threadid()
+ #define	issetugid() 0
+ 
++#ifdef _MSC_VER
+ /* use MSVC intrinsics */
+ #pragma intrinsic(_BitScanForward)
+ static __forceinline int
+@@ -265,6 +276,7 @@
+ 
+ 	return (0);
+ }
++#endif
+ 
+ /* Implement getenv without using malloc */
+ static char mozillaMallocOptionsBuf[64];
+@@ -285,11 +297,13 @@
+ typedef unsigned uint32_t;
+ typedef unsigned long long uint64_t;
+ typedef unsigned long long uintmax_t;
++#ifdef _MSC_VER
+ #if defined(MOZ_MEMORY_SIZEOF_PTR_2POW) && (MOZ_MEMORY_SIZEOF_PTR_2POW == 3)
+ typedef long long ssize_t;
+ #else
+ typedef long ssize_t;
+ #endif
++#endif
+ 
+ #define	MALLOC_DECOMMIT
+ #endif
+@@ -6194,8 +6208,8 @@
+ /*
+  * Mangle standard interfaces, in order to avoid linking problems.
+  */
+-#if defined(MOZ_MEMORY_DARWIN) || defined(MOZ_MEMORY_WINDOWS) || \
+-    defined(MOZ_MEMORY_ANDROID)
++#if 1 /*defined(MOZ_MEMORY_DARWIN) || defined(MOZ_MEMORY_WINDOWS) || \
++    defined(MOZ_MEMORY_ANDROID)*/
+ 
+ #ifdef MOZ_MEMORY_ANDROID
+ /*
+@@ -7117,7 +7131,7 @@
+ 		abort();
+ }
+ 
+-#elif defined(__GLIBC__) && !defined(__UCLIBC__)
++#elif 0 /*defined(__GLIBC__) && !defined(__UCLIBC__)*/
+ /*
+  * glibc provides the RTLD_DEEPBIND flag for dlopen which can make it possible
+  * to inconsistently reference libc's malloc(3)-compatible functions
