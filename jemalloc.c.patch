@@ -1,5 +1,5 @@
 --- jemalloc.orig.c	2012-03-31 00:32:24.455146193 +0400
-+++ jemalloc.c	2012-03-31 02:26:28.355918000 +0400
++++ jemalloc.c	2012-03-31 20:01:39.973508453 +0400
 @@ -218,6 +218,7 @@
  #endif
  
@@ -61,7 +61,15 @@
  
  #define	MALLOC_DECOMMIT
  #endif
-@@ -6194,8 +6208,8 @@
+@@ -1525,6 +1539,7 @@
+ #if defined(MOZ_MEMORY) && !defined(MOZ_MEMORY_WINDOWS)
+ #define	_write	write
+ #endif
++#pragma GCC diagnostic ignored "-Wunused-result"
+ 	_write(STDERR_FILENO, p1, (unsigned int) strlen(p1));
+ 	_write(STDERR_FILENO, p2, (unsigned int) strlen(p2));
+ 	_write(STDERR_FILENO, p3, (unsigned int) strlen(p3));
+@@ -6194,8 +6209,8 @@
  /*
   * Mangle standard interfaces, in order to avoid linking problems.
   */
@@ -72,7 +80,17 @@
  
  #ifdef MOZ_MEMORY_ANDROID
  /*
-@@ -7117,7 +7131,7 @@
+@@ -6786,7 +6801,8 @@
+ 
+ 
+ 
+-#ifdef MOZ_MEMORY_WINDOWS
++/*#ifdef MOZ_MEMORY_WINDOWS*/
++#if 0
+ void*
+ _recalloc(void *ptr, size_t count, size_t size)
+ {
+@@ -7117,7 +7133,7 @@
  		abort();
  }
  
