@@ -1,5 +1,5 @@
 --- jemalloc.orig.c	2012-03-31 00:32:24.455146193 +0400
-+++ jemalloc.c	2012-03-31 20:01:39.973508453 +0400
++++ jemalloc.c	2012-03-31 20:06:52.749516828 +0400
 @@ -218,6 +218,7 @@
  #endif
  
@@ -61,14 +61,14 @@
  
  #define	MALLOC_DECOMMIT
  #endif
-@@ -1525,6 +1539,7 @@
- #if defined(MOZ_MEMORY) && !defined(MOZ_MEMORY_WINDOWS)
- #define	_write	write
- #endif
+@@ -1519,6 +1533,7 @@
+ 	return (&s[i]);
+ }
+ 
 +#pragma GCC diagnostic ignored "-Wunused-result"
- 	_write(STDERR_FILENO, p1, (unsigned int) strlen(p1));
- 	_write(STDERR_FILENO, p2, (unsigned int) strlen(p2));
- 	_write(STDERR_FILENO, p3, (unsigned int) strlen(p3));
+ static void
+ wrtmessage(const char *p1, const char *p2, const char *p3, const char *p4)
+ {
 @@ -6194,8 +6209,8 @@
  /*
   * Mangle standard interfaces, in order to avoid linking problems.
