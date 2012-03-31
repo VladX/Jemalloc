@@ -41,7 +41,7 @@ extern "C" {
 extern const char *_malloc_options;
 
 /* Darwin and Linux already have memory allocation functions */
-#if (!defined(MOZ_MEMORY_DARWIN) && !defined(MOZ_MEMORY_LINUX))
+#if 0 /*(!defined(MOZ_MEMORY_DARWIN) && !defined(MOZ_MEMORY_LINUX))*/
 void	*malloc(size_t size);
 void	*valloc(size_t size);
 void	*calloc(size_t num, size_t size);

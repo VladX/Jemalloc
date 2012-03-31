@@ -24,7 +24,7 @@ if (CLANG_COMPILER)
 endif (CLANG_COMPILER)
 
 if (MSVC)
- set (CMAKE_C_FLAGS "/MT /O2")
+ set (CMAKE_C_FLAGS "/MD /O2")
 endif (MSVC)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")

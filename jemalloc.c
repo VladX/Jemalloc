@@ -6800,7 +6800,8 @@ jemalloc_purge_freed_pages()
 
 
 
-#ifdef MOZ_MEMORY_WINDOWS
+/*#ifdef MOZ_MEMORY_WINDOWS*/
+#if 0
 void*
 _recalloc(void *ptr, size_t count, size_t size)
 {
