@@ -1,5 +1,5 @@
 --- jemalloc.orig.c	2012-03-31 00:32:24.455146193 +0400
-+++ jemalloc.c	2012-03-31 20:06:52.749516828 +0400
++++ jemalloc.c	2012-03-31 20:33:20.813559355 +0400
 @@ -218,6 +218,7 @@
  #endif
  
@@ -61,15 +61,17 @@
  
  #define	MALLOC_DECOMMIT
  #endif
-@@ -1519,6 +1533,7 @@
+@@ -1519,6 +1533,9 @@
  	return (&s[i]);
  }
  
++#if defined(__GNUC__)
 +#pragma GCC diagnostic ignored "-Wunused-result"
++#endif
  static void
  wrtmessage(const char *p1, const char *p2, const char *p3, const char *p4)
  {
-@@ -6194,8 +6209,8 @@
+@@ -6194,8 +6211,8 @@
  /*
   * Mangle standard interfaces, in order to avoid linking problems.
   */
@@ -80,7 +82,7 @@
  
  #ifdef MOZ_MEMORY_ANDROID
  /*
-@@ -6786,7 +6801,8 @@
+@@ -6786,7 +6803,8 @@
  
  
  
@@ -90,7 +92,7 @@
  void*
  _recalloc(void *ptr, size_t count, size_t size)
  {
-@@ -7117,7 +7133,7 @@
+@@ -7117,7 +7135,7 @@
  		abort();
  }
  

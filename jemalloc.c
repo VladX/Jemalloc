@@ -1533,7 +1533,9 @@ umax2s(uintmax_t x, unsigned base, char *s)
 	return (&s[i]);
 }
 
+#if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-result"
+#endif
 static void
 wrtmessage(const char *p1, const char *p2, const char *p3, const char *p4)
 {
