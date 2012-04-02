@@ -2,7 +2,7 @@
 
 const size_t min_size = 1024 * 1;
 const size_t max_size = 1024 * 1024;
-const size_t num = 100;
+#define num 100
 
 int main (void)
 {
