@@ -8,6 +8,7 @@ int main (void)
 {
 	size_t i;
 	char * ptrs[num];
+	MALLOC_INIT();
 	for (i = 0; i < num; i++)
 	{
 		size_t size = (rand() % (max_size - min_size)) + min_size;
