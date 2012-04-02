@@ -7,3 +7,6 @@ cmake_install.cmake
 *.o
 *.obj
 *.pdb
+test_*
+CTestTestfile.cmake
+Testing
